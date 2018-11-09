@@ -6,6 +6,6 @@ import java.util.*
 
 @Entity(tableName = "potential")
 data class Potential(
-        @PrimaryKey() val userId: String = UUID.randomUUID().toString()
+        @PrimaryKey() val userId: String
 ) {
 }
