@@ -20,6 +20,6 @@ class App: Application() {
 
         context = this.applicationContext
 
-        Repository.instance.startCreatingMatches()
+        Repository.instance.initRepository()
     }
 }

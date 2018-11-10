@@ -1,20 +1,35 @@
 package io.snaker.app.split_presenter.discover
 
+import io.reactivex.Completable
+import io.reactivex.Maybe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import io.snaker.app.split_presenter.storage.Potential
-import java.util.*
+import io.snaker.app.split_presenter.storage.Repository
 
 class DiscoverInteractor {
 
-    val potentialList = (0..10)
-            .toList()
-            .map { Potential(UUID.randomUUID().toString()) }
-            .toMutableList()
+    val repository = Repository.instance
 
-    fun getPotential(): Potential? {
-        return potentialList.firstOrNull()
+    fun getPotential(): Maybe<Potential> {
+        return repository.getPotential()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun removePotential() {
-        potentialList.removeAt(0)
+    fun removePotential(potential: Potential): Completable {
+        return Completable.create {
+            emitter ->
+           repository.removePotential(potential)
+            if (!emitter.isDisposed) emitter.onComplete()
+        }
+                .subscribeOn(Schedulers.computation())
+
+    }
+
+    fun createNewPotentials(): Completable {
+        return repository.generatePotentials()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

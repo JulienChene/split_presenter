@@ -1,9 +1,7 @@
 package io.snaker.app.split_presenter.storage
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.*
+import io.reactivex.Maybe
 
 @Dao
 abstract class PotentialDao {
@@ -16,4 +14,7 @@ abstract class PotentialDao {
 
     @Delete
     abstract fun delete(data: Potential)
+
+    @Query("SELECT * FROM potential ORDER BY userId LIMIT 1")
+    abstract fun getPotential(): Maybe<Potential>
 }
