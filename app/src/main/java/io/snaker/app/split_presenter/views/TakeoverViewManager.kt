@@ -19,15 +19,27 @@ class TakeoverViewManager @JvmOverloads constructor(
     fun viewTakeover(view: View) {
         val startConstraintSet = ConstraintSet()
         this.addView(view)
+        view.layoutParams.apply {
+            width = 0
+            height = 0
+        }
 
         startConstraintSet.clone(this)
         startConstraintSet.connect(view.id, ConstraintSet.TOP, this.id, ConstraintSet.TOP, this.measuredHeight)
+        startConstraintSet.connect(view.id, ConstraintSet.BOTTOM, this.id, ConstraintSet.BOTTOM, -this.measuredHeight)
+//        startConstraintSet.connect(view.id, ConstraintSet.TOP, this.id, ConstraintSet.TOP)
+//        startConstraintSet.connect(view.id, ConstraintSet.BOTTOM, this.id, ConstraintSet.BOTTOM)
+        startConstraintSet.connect(view.id, ConstraintSet.START, this.id, ConstraintSet.START)
+        startConstraintSet.connect(view.id, ConstraintSet.END, this.id, ConstraintSet.END)
+//        startConstraintSet.setVerticalBias(view.id, 1.0f)
         startConstraintSet.applyTo(this)
 
         Handler().postDelayed({
             val endConstraintSet = ConstraintSet()
             endConstraintSet.clone(startConstraintSet)
             endConstraintSet.setMargin(view.id, ConstraintSet.TOP, 0)
+            endConstraintSet.setMargin(view.id, ConstraintSet.BOTTOM, 0)
+//            startConstraintSet.setVerticalBias(view.id, 0f)
 
             val transition = AutoTransition()
             transition.duration = 500
@@ -39,7 +51,8 @@ class TakeoverViewManager @JvmOverloads constructor(
                 override fun onTransitionResume(transition: Transition?) {}
                 override fun onTransitionPause(transition: Transition?) {}
                 override fun onTransitionCancel(transition: Transition?) {}
-                override fun onTransitionStart(transition: Transition?) {}
+                override fun onTransitionStart(transition: Transition?) {
+                }
             })
             TransitionManager.beginDelayedTransition(this, transition)
             endConstraintSet.applyTo(this)

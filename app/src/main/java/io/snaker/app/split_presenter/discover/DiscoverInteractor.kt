@@ -6,6 +6,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.snaker.app.split_presenter.storage.Potential
 import io.snaker.app.split_presenter.storage.Repository
+import timber.log.Timber
 
 class DiscoverInteractor {
 
@@ -20,7 +21,8 @@ class DiscoverInteractor {
     fun removePotential(potential: Potential): Completable {
         return Completable.create {
             emitter ->
-           repository.removePotential(potential)
+            repository.removePotential(potential)
+            Timber.e("potential removed")
             if (!emitter.isDisposed) emitter.onComplete()
         }
                 .subscribeOn(Schedulers.computation())

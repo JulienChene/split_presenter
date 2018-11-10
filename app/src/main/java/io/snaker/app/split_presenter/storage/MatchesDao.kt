@@ -33,7 +33,6 @@ abstract class MatchesDao {
         val matchCount = getMatchCount()
         val match = Match(matchCount + 1)
         if (matchCount >= 10) {
-            Timber.e("Nuking matches table !!!!")
             Timber.e("match list ${getAllMatches()}")
             nukeTableContent()
         }

@@ -51,17 +51,18 @@ class Repository private constructor() {
                     .toList()
                     .map { Potential(UUID.randomUUID().toString()) }
 
+            potentialDao.nukeTable()
             potentialDao.upsertMany(*potentialList.toTypedArray())
             if (!emitter.isDisposed) emitter.onComplete()
         }
     }
 
     fun removePotential(potential: Potential) {
-        potentialDao.delete(potential)
+        val value = potentialDao.delete(potential)
+        Timber.e("Removing potential : $value")
     }
 
     fun getPotential(): Maybe<Potential> {
-        Timber.e("getPotential")
         return potentialDao.getPotential()
     }
 

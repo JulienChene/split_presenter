@@ -11,7 +11,7 @@ import io.snaker.app.split_presenter.views.DiscoverEmptyState
 import io.snaker.app.split_presenter.views.PotentialView
 import kotlinx.android.synthetic.main.discover_fragment.*
 
-class DiscoverFragment : Fragment(), DiscoverPresenter.View, DiscoverEmptyState.OnEmptyStateClick {
+class DiscoverFragment : Fragment(), DiscoverPresenter.View, DiscoverEmptyState.OnEmptyStateClick, PotentialView.OnPotentialViewClick {
 
     val presenter = DiscoverPresenter()
 
@@ -23,10 +23,7 @@ class DiscoverFragment : Fragment(), DiscoverPresenter.View, DiscoverEmptyState.
         super.onResume()
         presenter.onResume(this)
 
-        presenter.onDiscoverInteraction()
-        takeover_manager.setOnClickListener {
-            presenter.onDiscoverInteraction()
-        }
+        presenter.onPotentialInteraction()
     }
 
     override fun onPause() {
@@ -38,10 +35,15 @@ class DiscoverFragment : Fragment(), DiscoverPresenter.View, DiscoverEmptyState.
         presenter.getNewPotentials()
     }
 
+    override fun onPotentialClicked() {
+        presenter.onPotentialInteraction()
+    }
+
+
     override fun showEmptyState() {
         val context = context ?: return
         val emptyStateView = DiscoverEmptyState(context)
-        emptyStateView.listener = this
+        emptyStateView.setListener(this)
 
         takeover_manager.viewTakeover(emptyStateView)
     }
@@ -50,6 +52,7 @@ class DiscoverFragment : Fragment(), DiscoverPresenter.View, DiscoverEmptyState.
         val context = context ?: return
         val potentialView = PotentialView(context)
         potentialView.setPotentialId(potential.userId)
+        potentialView.setListener(this)
 
         takeover_manager.viewTakeover(potentialView)
     }

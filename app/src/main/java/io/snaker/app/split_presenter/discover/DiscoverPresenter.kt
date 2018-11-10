@@ -28,14 +28,14 @@ class DiscoverPresenter {
         disposable?.add(interactor.createNewPotentials()
                 .subscribe({
                     // We just generated a new set, show new potential
-                    onDiscoverInteraction()
+                    onPotentialInteraction()
                 }, {
 
                 })
         )
     }
 
-    fun onDiscoverInteraction() {
+    fun onPotentialInteraction() {
         disposable?.add(interactor.getPotential()
                 .subscribe({
                     potential ->

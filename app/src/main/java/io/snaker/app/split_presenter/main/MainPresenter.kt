@@ -38,7 +38,6 @@ class MainPresenter {
         disposable?.add(interactor.getMatchBadgeCount()
                 .subscribe({
                     matchBadgeCount ->
-                    Timber.e("matchBadgeCount: $matchBadgeCount")
                     weakView?.get()?.showBadgeCountForFeature(Feature.Matches, matchBadgeCount)
                 }, {
                     error ->

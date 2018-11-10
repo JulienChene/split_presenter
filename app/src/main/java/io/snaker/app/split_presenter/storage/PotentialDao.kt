@@ -13,7 +13,10 @@ abstract class PotentialDao {
     abstract fun upsertMany(vararg data: Potential)
 
     @Delete
-    abstract fun delete(data: Potential)
+    abstract fun delete(data: Potential): Int
+
+    @Query("DELETE FROM potential")
+    abstract fun nukeTable()
 
     @Query("SELECT * FROM potential ORDER BY userId LIMIT 1")
     abstract fun getPotential(): Maybe<Potential>
